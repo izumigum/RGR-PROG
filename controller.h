@@ -1,10 +1,10 @@
 #include <iostream>
-#include "orders.h"
+#include "house.h"
 using namespace std;
 
 class controller {
 private:
-    funeral_home current_home;
+    funeral_home house;
 public:
     controller() {
     }
@@ -13,67 +13,57 @@ public:
         while (run) {
             menu();
             int var = 0;
-            while (var < 1 || var > 8) {
-                cout << "Input variant: ";
+            while (var < 1 || var > 7) {
+                cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
                 cin >> var;
             }
-            if (var == 8) {
-                run = 0;
-            }
             if (var == 1) {
-                current_home.print();
+                house.get_info();
             }
             if (var == 2) {
-                current_home.addRc();
-                cout << "Çàêàç óñïåøíî ñîçäàí!";
+                house.new_zakaz();
+                cout << "Ð—Ð°ÐºÐ°Ð· Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½." << endl;;
             }
             if (var == 3) {
-                current_home.print();
-                cout << "Ââåäèòå íîìåð çàêàçà, êîòîðîé íàäî óäàëèòü:\n";
                 int n;
+                house.get_info();
+                cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð° Ð´Ð»Ñ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ" << endl; 
                 cin >> n;
-                current_home.deleteRc(n);
+                house.delete_zakaz(n);
             }
             if (var == 4) {
-                current_home.saveToFile(true);
-                cout << "Çàêàçû óñïåøíî ñîõðàíåíû!" << endl;
-            }
-            if (var == 5) {
-                current_home.saveToFile(false);
-                cout << "Ôàéë óñïåøíî ïåðåçàïèñàí ñ íîâûìè çàêàçàìè!" << endl;
+                house.save_file();
+                cout << "Ð—Ð°ÐºÐ°Ð·Ñ‹ ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ñ‹ Ð² Ñ„Ð°Ð¹Ð»." << endl;
             }
             if (var == 6) {
-                current_home.loadFile();
-                cout << "Çàêàçû èç ôàéëà óñïåøíî çàãðóæåíû!" << endl;
+                house.load_file();
+                cout << "Ð—Ð°ÐºÐ°Ð·Ñ‹ Ð¸Ð· Ñ„Ð°Ð¹Ð»Ð° Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹." << endl;
             }
             if (var == 7) {
-                cout << "Âûáåðèòå çàêàç, êîòîðûé ñëåäóåò îòðåäàêòèðîâàòü:" << endl;
-                int choose= 0;
-                while (choose < 1 || choose>current_home.getN() + 1) {
-                    current_home.print();
-                    cout << "[" << current_home.getN() + 1 << "] " << "Îòìåíà." << endl;
-                    cin >> choose;
+                cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð°, Ð´Ð»Ñ Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ" << endl;
+                int k= 0;
+                while (k < 1 || k>house.getN()) {
+                    house.get_info();
+                    cin >> k;
 
                 }
-                if (choose != current_home.getN() + 1)
-                {
-                    current_home.changeRecord(choose);
-                    cout << "Çàêàç îòðåäàêòèðîâàí!";
-                }
-                
+                house.change_zakaz_info(k);
+                cout << "Ð˜Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð·Ð°ÐºÐ°Ð·Ð° Ð¸Ð·Ð¼ÐµÐ½Ð¸Ð½Ð°.";
+            }
+            if (var == 7) {
+                run = 0;
             }
         }
     }
 
     void menu() {
         cout << "Commands: " << endl;
-        cout << "[1] Âûâåñòè âñå çàêàçû" << endl;
-        cout << "[2] Ñîçäàòü íîâóþ çàïèñü î çàêàçå" << endl;
-        cout << "[3] Óäàëèòü çàïèñü î çàêàçå" << endl;
-        cout << "[4] Äîáàâèòü òåêóùèå çàêàçû â ôàéë" << endl;
-        cout << "[5] Ïåðàçàïèñàòü òåêóùèé ôàéë ñ çàêàçàìè" << endl;
-        cout << "[6] Çàãðóçèòü çàêàçû èç ôàéëà" << endl;
-        cout << "[7] Îòðåäàêòèðîâàòü çàêàç" << endl;
-        cout << "[8] Âûõîä èç ïðîãðàììû" << endl;
+        cout << "1. Ð’Ñ‹Ð²ÐµÑÑ‚Ð¸ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð²ÑÐµÑ… Ð·Ð°ÐºÐ°Ð·Ð¾Ð²." << endl;
+        cout << "2. Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ð½Ð¾Ð²Ñ‹Ð¹ Ð·Ð°ÐºÐ°Ð·." << endl;
+        cout << "3. Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð·." << endl;
+        cout << "4. Ð¡Ð¾Ñ…Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð·Ñ‹ Ð² Ñ„Ð°Ð¹Ð»." << endl;
+        cout << "5. Ð—Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð·Ñ‹ Ð¸Ð· Ñ„Ð°Ð¹Ð»Ð°." << endl;
+        cout << "6. Ð˜Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð·Ð°ÐºÐ°Ð·Ð°." << endl;
+        cout << "7. Ð’Ñ‹Ñ…Ð¾Ð´ Ð¸Ð· Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹." << endl;
     }
 };
