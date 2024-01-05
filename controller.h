@@ -35,11 +35,11 @@ public:
                 house.save_file();
                 cout << "Заказы сохранены в файл." << endl;
             }
-            if (var == 6) {
+            if (var == 5) {
                 house.load_file();
                 cout << "Заказы из файла загружены." << endl;
             }
-            if (var == 7) {
+            if (var == 6) {
                 cout << "Выберите номер заказа, для редактирования" << endl;
                 int k= 0;
                 while (k < 1 || k>house.getN()) {
