@@ -107,86 +107,113 @@ public:
         n++;
         zakazi = new_zakazi;
     }
-    void save_file() {
-        ofstream out;
-        out.open("zakazi.txt", ios::app);
-        if (out.is_open())
-        {
-            string info;
-            for (int i = 0; i < n; i++) {
-                zakaz* zk = zakazi[i];          
-                if (zk->getType()) {              
-                    info = to_string(zk->getType()) + ";" + zk->getClient().getname() + ";" + zk->getClient().getsurname()+";" + zk->getClient().getnumber() + ";" + zk->getDate() + ";" + to_string(zk->getHB())+";"+to_string(zk->getHA()) + ";"+ zk->getGrob() + ";" + zk->getUrna();
-                }
-                else {
-                    info = to_string(zk->getType()) + ";" + zk->getClient().getname() + ";" + zk->getClient().getsurname() + ";" + zk->getClient().getnumber() + ";" + zk->getDate() + ";" +
-                        to_string(zk->getNBus()) + ";" + to_string(zk->getHB()) + ";" + to_string(zk->getHA()) + ";" + zk->getGrob() + ";" +
-                        to_string(zk->getV()) + ";" + to_string(zk->getS()) + ";" + to_string(zk->getA()) + ";" + to_string(zk->getSize());
-                }
-                out << info << endl;
+      void save_file() {
+    ofstream out;
+    out.open("zakazi.txt", ios::app);
+    if (out.is_open()) {
+        string info;
+        for (int i = 0; i < n; i++) {
+            zakaz *zk = zakazi[i];
+            if (zk->getType()) {
+                info = to_string(zk->getType()) + ";" + zk->getClient().getname() +
+                       ";" + zk->getClient().getsurname() + ";" +
+                       zk->getClient().getnumber() + ";" + zk->getDate() + ";" +
+                       to_string(zk->getHB()) + ";" + to_string(zk->getHA()) + ";" +
+                       zk->getGrob() + ";" + zk->getUrna() + ";";
+            } else {
+                info = to_string(zk->getType()) + ";" + zk->getClient().getname() +
+                       ";" + zk->getClient().getsurname() + ";" +
+                       zk->getClient().getnumber() + ";" + zk->getDate() + ";" +
+                       to_string(zk->getNBus()) + ";" + to_string(zk->getHB()) + ";" +
+                       to_string(zk->getHA()) + ";" + zk->getGrob() + ";" +
+                       to_string(zk->getV()) + ";" + to_string(zk->getS()) + ";" +
+                       to_string(zk->getA()) + ";" + to_string(zk->getSize()) + ";";
             }
-            out.close();
+            out << info << endl;
+        }
+        out.close();
+    }
+}
+
+void load_file() {
+    ifstream in("zakazi.txt");
+    if (in.is_open()) {
+        string newrc;
+        while (getline(in, newrc)) {
+            int type = stoi(newrc.substr(0, newrc.find(";")));
+            if (type) {
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string name = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string surname = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string number = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string date = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                int heightB = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                int heightA = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string grob = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string urna = newrc.substr(0, newrc.find(";"));
+                zakaz *newZakaz = new Cremacia(name, surname, number, date, heightB,
+                                              heightA, grob, urna);
+                push_zakaz(newZakaz);
+            } else {
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string name = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string surname = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string number = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string date = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                int bus = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                int heightB = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                int heightA = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                string grob = newrc.substr(0, newrc.find(";"));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                bool v = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                bool s = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                bool a = stoi(newrc.substr(0, newrc.find(";")));
+                newrc = newrc.substr(newrc.find(";") + 1,
+                                     newrc.length() - newrc.find(";") - 1);
+                int size = stoi(newrc.substr(0, newrc.find(";")));
+                zakaz *newZakaz = new Pogrebenie(name, surname, number, date, bus,
+                                                heightB, heightA, grob, v, s, a, size);
+                push_zakaz(newZakaz);
+            }
         }
     }
-    void load_file() {
-        ifstream in("zakazi.txt");
-        if (in.is_open())
-        {
-            string newrc;
-            while (getline(in, newrc)) {
-                int type = stoi(newrc.substr(0, newrc.find(";")));
-                if (type) {
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string name = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string surname = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string number = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string date = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    int heightB = stoi(newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    int heightA = stoi(newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string grob = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string urna = newrc.substr(0, newrc.find(";"));
-                    zakaz* newrc = new Cremacia(name, surname, number, date, heightB, heightA, grob, urna);
-                    push_zakaz(newrc);
-                }
-                else {
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string name = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string surname = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string number = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string date = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    int bus = stoi(newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    int heightB = stoi(newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    int heightA = stoi(newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    string grob = newrc.substr(0, newrc.find(";"));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    bool v = stoi (newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    bool s = stoi(newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    bool a = stoi(newrc.substr(0, newrc.find(";")));
-                    newrc = newrc.substr(newrc.find(";") + 2, newrc.length() - newrc.find(";"));
-                    int size = stoi(newrc.substr(0, newrc.find(";")));
-                    zakaz* newrc = new Pogrebenie(name,surname,number,date,bus,heightB,heightA,grob,v,s,a,size);
-                    push_zakaz(newrc);
-                }  
-            }
-        }
-        in.close();
-    }
+    in.close();
+}
     void change_zakaz_info(int n) {
         zakazi[n - 1]->change_info();
     }
